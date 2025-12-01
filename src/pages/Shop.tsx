@@ -270,6 +270,7 @@ const Shop = ({ sortBy = "all", collectionSlug }: ShopPageProps = {}) => {
                     price={Number(p.price || 0)}
                     image={img}
                     category={p.category || ""}
+                    slug={p.slug || ""}
                     images={p.images}
                   />
                 );
