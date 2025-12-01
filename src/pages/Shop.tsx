@@ -18,6 +18,7 @@ type ProductRow = {
   category?: string;
   image_url?: string;
   images?: string[];
+  slug?: string;
   createdAt?: string;
 };
 
