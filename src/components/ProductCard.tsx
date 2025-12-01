@@ -14,6 +14,7 @@ interface ProductCardProps {
   image: string;
   category: string;
   to?: string;
+  slug?: string;
   images?: string[];
 }
 
