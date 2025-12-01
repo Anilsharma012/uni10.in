@@ -107,7 +107,7 @@ type P = {
 };
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { addToCart } = useCart();
@@ -127,13 +127,13 @@ const ProductDetail = () => {
   const [isVerifiedBuyer, setIsVerifiedBuyer] = useState(false);
   const [reviewKey, setReviewKey] = useState(0);
 
-  // ✅ Product fast fetch – NO cache-busting query param
+  // ✅ Product fast fetch – Fetch by slug
   useEffect(() => {
     let ignore = false;
     (async () => {
       try {
         setLoading(true);
-        const { ok, json } = await api(`/api/products/${id}`);
+        const { ok, json } = await api(`/api/products/slug/${slug}`);
         if (!ok) throw new Error(json?.message || json?.error || "Failed to load product");
         if (!ignore) {
           const productData = json?.data as P;
@@ -158,7 +158,7 @@ const ProductDetail = () => {
     return () => {
       ignore = true;
     };
-  }, [id, toast]);
+  }, [slug, toast]);
 
   // ✅ Scroll top on product change (UX smooth)
   useEffect(() => {
