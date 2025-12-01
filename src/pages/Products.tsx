@@ -20,6 +20,7 @@ type ProductRow = {
   stock?: number;
   image_url?: string;
   images?: string[];
+  slug?: string;
   discount?: {
     type: 'flat' | 'percentage';
     value: number;
