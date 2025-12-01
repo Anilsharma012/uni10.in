@@ -14,6 +14,7 @@ interface RelatedProduct {
   images?: string[];
   category?: string;
   stock?: number;
+  slug?: string;
   discount?: {
     type: 'flat' | 'percentage';
     value: number;
