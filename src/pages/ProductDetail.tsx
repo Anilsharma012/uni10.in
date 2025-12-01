@@ -345,12 +345,14 @@ const ProductDetail = () => {
 
   const refetchProduct = useCallback(async () => {
     try {
-      const { ok, json } = await api(`/api/products/${id}`);
+      const productId = product?._id || product?.id;
+      if (!productId) return;
+      const { ok, json } = await api(`/api/products/${productId}`);
       if (ok) setProduct(json?.data as P);
     } catch {
       // ignore refresh errors
     }
-  }, [id]);
+  }, [product]);
 
   useEffect(() => {
     const onOrderPlaced = () => {
