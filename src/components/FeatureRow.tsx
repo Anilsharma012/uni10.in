@@ -44,10 +44,10 @@ export const FeatureRow = ({ image, title, link, imageAlt, reverse = false }: Fe
       {/* Category Title and Button - Mobile: Bottom, Desktop: Right Side */}
       <div className="relative z-20 w-full md:w-1/2 h-[50vh] md:h-screen flex flex-col items-center md:items-end justify-between py-10 md:py-20 px-4 md:pr-20">
         <h2
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-black tracking-tight leading-none text-center md:text-right text-foreground drop-shadow-lg"
+          className="font-black tracking-tight leading-none text-center md:text-right text-foreground drop-shadow-lg whitespace-nowrap"
           style={{
+            fontSize: 'clamp(2.25rem, 8vw, 10rem)',
             letterSpacing: '0.02em',
-            wordBreak: 'break-word',
           }}
         >
           {/* ✅ first letter red without deleting your structure */}
