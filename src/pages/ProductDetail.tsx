@@ -236,6 +236,15 @@ const ProductDetail = () => {
     }
     ogUrl.setAttribute("content", window.location.href);
 
+    // Update or create canonical link for SEO
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", `${window.location.origin}/products/${slug}`);
+
     // Update Twitter card image
     let twitterImage = document.querySelector('meta[name="twitter:image"]');
     if (!twitterImage) {
@@ -244,7 +253,7 @@ const ProductDetail = () => {
       document.head.appendChild(twitterImage);
     }
     twitterImage.setAttribute("content", imageUrl);
-  }, [product]);
+  }, [product, slug]);
 
   // ✅ Verified buyer check (runs AFTER product shown – does not block UI)
   useEffect(() => {
