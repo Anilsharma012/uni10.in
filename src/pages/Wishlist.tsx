@@ -103,16 +103,18 @@ const Wishlist = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {wishlistProducts.map((product) => {
               const id = String(product._id || product.id || '');
+              const slug = product.slug || '';
               const title = product.title || product.name || '';
               const rawImg = product.image_url || (Array.isArray(product.images) ? product.images[0] : '') || '/placeholder.svg';
               const img = resolveImage(rawImg);
+              const productLink = slug ? `/products/${slug}` : `/product/${id}`;
 
               return (
                 <Card
                   key={id}
                   className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300"
                 >
-                  <Link to={`/product/${id}`}>
+                  <Link to={productLink}>
                     <div className="aspect-square overflow-hidden bg-secondary relative">
                       <img
                         src={img}
@@ -136,7 +138,7 @@ const Wishlist = () => {
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
                       {product.category || 'Uncategorized'}
                     </p>
-                    <Link to={`/product/${id}`}>
+                    <Link to={productLink}>
                       <h3 className="font-semibold text-xs sm:text-base mb-2 group-hover:text-primary transition-colors line-clamp-2">{title}</h3>
                     </Link>
                     <div className="flex items-center justify-between gap-2">
