@@ -79,7 +79,20 @@ router.get('/', authOptional, async (req, res) => {
   }
 });
 
-// Get by id or slug
+// Get by slug (new endpoint, preferred)
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const doc = await Product.findOne({ slug }).lean();
+    if (!doc) return res.status(404).json({ ok: false, message: 'Not found' });
+    return res.json({ ok: true, data: doc });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ ok: false, message: 'Server error' });
+  }
+});
+
+// Get by id or slug (backward compatibility)
 router.get('/:idOrSlug', async (req, res) => {
   try {
     const { idOrSlug } = req.params;
