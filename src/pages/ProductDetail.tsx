@@ -163,7 +163,7 @@ const ProductDetail = () => {
   // ✅ Scroll top on product change (UX smooth)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [id]);
+  }, [slug]);
 
   // ✅ Dynamic meta tags for social sharing (SEO + shareable URLs)
   useEffect(() => {
