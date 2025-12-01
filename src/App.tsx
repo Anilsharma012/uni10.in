@@ -36,6 +36,7 @@ import MyOrders from "./pages/MyOrders";
 import AdminReturns from "./pages/AdminReturns";
 import OrderSuccess from "./pages/OrderSuccess";
 import AdminTracking from "./pages/AdminTracking";
+import ProductRedirect from "./pages/ProductRedirect";
 
 const queryClient = new QueryClient();
 
