@@ -18,7 +18,7 @@ interface ProductCardProps {
   images?: string[];
 }
 
-export const ProductCard = ({ id, name, price, image, category, to, images }: ProductCardProps) => {
+export const ProductCard = ({ id, name, price, image, category, to, slug, images }: ProductCardProps) => {
   const { user } = useAuth();
   const { addToCart } = (() => { try { return useCart(); } catch { return { addToCart: () => {} } as any; } })();
   const { isInWishlist, toggleWishlist } = useWishlist();
