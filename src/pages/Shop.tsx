@@ -18,6 +18,7 @@ type ProductRow = {
   category?: string;
   image_url?: string;
   images?: string[];
+  slug?: string;
   createdAt?: string;
 };
 
@@ -269,6 +270,7 @@ const Shop = ({ sortBy = "all", collectionSlug }: ShopPageProps = {}) => {
                     price={Number(p.price || 0)}
                     image={img}
                     category={p.category || ""}
+                    slug={p.slug || ""}
                     images={p.images}
                   />
                 );

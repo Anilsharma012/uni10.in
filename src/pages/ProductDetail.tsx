@@ -107,7 +107,7 @@ type P = {
 };
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { addToCart } = useCart();
@@ -127,13 +127,13 @@ const ProductDetail = () => {
   const [isVerifiedBuyer, setIsVerifiedBuyer] = useState(false);
   const [reviewKey, setReviewKey] = useState(0);
 
-  // ✅ Product fast fetch – NO cache-busting query param
+  // ✅ Product fast fetch – Fetch by slug
   useEffect(() => {
     let ignore = false;
     (async () => {
       try {
         setLoading(true);
-        const { ok, json } = await api(`/api/products/${id}`);
+        const { ok, json } = await api(`/api/products/slug/${slug}`);
         if (!ok) throw new Error(json?.message || json?.error || "Failed to load product");
         if (!ignore) {
           const productData = json?.data as P;
@@ -158,12 +158,12 @@ const ProductDetail = () => {
     return () => {
       ignore = true;
     };
-  }, [id, toast]);
+  }, [slug, toast]);
 
   // ✅ Scroll top on product change (UX smooth)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-  }, [id]);
+  }, [slug]);
 
   // ✅ Dynamic meta tags for social sharing (SEO + shareable URLs)
   useEffect(() => {
@@ -236,6 +236,15 @@ const ProductDetail = () => {
     }
     ogUrl.setAttribute("content", window.location.href);
 
+    // Update or create canonical link for SEO
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", `${window.location.origin}/products/${slug}`);
+
     // Update Twitter card image
     let twitterImage = document.querySelector('meta[name="twitter:image"]');
     if (!twitterImage) {
@@ -244,7 +253,7 @@ const ProductDetail = () => {
       document.head.appendChild(twitterImage);
     }
     twitterImage.setAttribute("content", imageUrl);
-  }, [product]);
+  }, [product, slug]);
 
   // ✅ Verified buyer check (runs AFTER product shown – does not block UI)
   useEffect(() => {

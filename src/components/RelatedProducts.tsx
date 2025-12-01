@@ -14,6 +14,7 @@ interface RelatedProduct {
   images?: string[];
   category?: string;
   stock?: number;
+  slug?: string;
   discount?: {
     type: 'flat' | 'percentage';
     value: number;
@@ -118,6 +119,7 @@ export const RelatedProducts = ({ productId }: { productId: string }) => {
       <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 -mx-3 sm:-mx-4 px-3 sm:px-4">
         {products.map((product) => {
           const id = product._id || product.id;
+          const slug = product.slug || '';
           const title = product.title || 'Product';
           const price = Number(product.price || 0);
           const image = resolveImage(product.image_url || product.images?.[0]);
@@ -129,11 +131,12 @@ export const RelatedProducts = ({ productId }: { productId: string }) => {
               ? `${discount.value}% off`
               : `₹${discount.value} off`
             : null;
+          const productLink = slug ? `/products/${slug}` : `/product/${id}`;
 
           return (
             <Link
               key={id}
-              to={`/product/${id}`}
+              to={productLink}
               className="flex-shrink-0 w-40 sm:w-48 group"
             >
               <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow">

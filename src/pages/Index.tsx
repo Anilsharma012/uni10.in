@@ -35,6 +35,7 @@ type ProductRow = {
   category?: string;
   images?: string[];
   image_url?: string;
+  slug?: string;
   createdAt?: string;
 };
 
@@ -336,6 +337,7 @@ const Index = () => {
       price: Number(p.price || 0),
       image: img,
       category: p.category || "",
+      slug: p.slug || "",
       images: Array.isArray(p.images) ? p.images : [],
     };
   };
@@ -405,7 +407,7 @@ const Index = () => {
           <div className="flex items-stretch gap-6 pr-6" ref={contentRef}>
             {rowItems.map((p) => {
               const card = mapToCard(p);
-              const to = `/product/${card.id}`;
+              const to = card.slug ? `/products/${card.slug}` : `/product/${card.id}`;
               return (
                 <div key={String(p._id || p.id)} className="w-60">
                   <ProductCard {...card} to={to} />
@@ -416,7 +418,7 @@ const Index = () => {
           <div className="flex items-stretch gap-6 pr-6" aria-hidden="true">
             {rowItems.map((p, idx) => {
               const card = mapToCard(p);
-              const to = `/product/${card.id}`;
+              const to = card.slug ? `/products/${card.slug}` : `/product/${card.id}`;
               return (
                 <div
                   key={`dup-${idx}-${String(p._id || p.id)}`}

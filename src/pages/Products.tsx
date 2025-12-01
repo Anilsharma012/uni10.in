@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, ShoppingCart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
@@ -20,6 +21,7 @@ type ProductRow = {
   stock?: number;
   image_url?: string;
   images?: string[];
+  slug?: string;
   discount?: {
     type: 'flat' | 'percentage';
     value: number;
@@ -148,13 +150,13 @@ const Products = () => {
             {filteredProducts.map((product) => {
               const id = String(product._id || product.id || '');
               const title = product.title || product.name || '';
+              const slug = product.slug || '';
               const rawImg = product.image_url || (Array.isArray(product.images) ? product.images[0] : '') || '/placeholder.svg';
               const img = resolveImage(rawImg);
+              const productLink = slug ? `/products/${slug}` : `/product/${id}`;
               return (
-                <Card
-                  key={id}
-                  className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300"
-                >
+                <Link key={id} to={productLink}>
+                  <Card className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300">
                   <div className="aspect-square overflow-hidden bg-secondary relative">
                     <img
                       src={img}
@@ -207,7 +209,8 @@ const Products = () => {
                       </Button>
                     </div>
                   </div>
-                </Card>
+                  </Card>
+                </Link>
               );
             })}
           </div>

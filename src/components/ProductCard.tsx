@@ -14,10 +14,11 @@ interface ProductCardProps {
   image: string;
   category: string;
   to?: string;
+  slug?: string;
   images?: string[];
 }
 
-export const ProductCard = ({ id, name, price, image, category, to, images }: ProductCardProps) => {
+export const ProductCard = ({ id, name, price, image, category, to, slug, images }: ProductCardProps) => {
   const { user } = useAuth();
   const { addToCart } = (() => { try { return useCart(); } catch { return { addToCart: () => {} } as any; } })();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -64,7 +65,7 @@ export const ProductCard = ({ id, name, price, image, category, to, images }: Pr
     toggleWishlist(id);
   };
 
-  const linkTo = to || `/product/${id}`;
+  const linkTo = to || (slug ? `/products/${slug}` : `/product/${id}`);
 
   return (
     <Card className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300">

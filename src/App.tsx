@@ -36,6 +36,7 @@ import MyOrders from "./pages/MyOrders";
 import AdminReturns from "./pages/AdminReturns";
 import OrderSuccess from "./pages/OrderSuccess";
 import AdminTracking from "./pages/AdminTracking";
+import ProductRedirect from "./pages/ProductRedirect";
 
 const queryClient = new QueryClient();
 
@@ -118,8 +119,9 @@ const App = () => (
               <Route path="/shop" element={<Shop />} />
               <Route path="/shop/new-arrivals" element={<NewArrivals />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/products/:slug" element={<ProductDetail />} />
               <Route path="/collection/:slug" element={<CollectionDetail />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/product/:id" element={<ProductRedirect />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<CheckoutPayment />} />
               <Route path="/orders/success" element={<OrderSuccess />} />
