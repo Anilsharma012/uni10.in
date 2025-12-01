@@ -65,7 +65,7 @@ export const ProductCard = ({ id, name, price, image, category, to, slug, images
     toggleWishlist(id);
   };
 
-  const linkTo = to || `/product/${id}`;
+  const linkTo = to || (slug ? `/products/${slug}` : `/product/${id}`);
 
   return (
     <Card className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300">
