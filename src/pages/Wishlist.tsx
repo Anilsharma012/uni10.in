@@ -20,6 +20,7 @@ type ProductRow = {
   stock?: number;
   image_url?: string;
   images?: string[];
+  slug?: string;
 };
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
