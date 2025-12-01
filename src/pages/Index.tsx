@@ -337,6 +337,7 @@ const Index = () => {
       price: Number(p.price || 0),
       image: img,
       category: p.category || "",
+      slug: p.slug || "",
       images: Array.isArray(p.images) ? p.images : [],
     };
   };
