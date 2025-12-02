@@ -455,6 +455,11 @@ const EMPTY_FORM: ProductFormState = {
     type: 'flat',
     value: 0,
   },
+  seo: {
+    title: '',
+    description: '',
+    keywords: '',
+  },
 };
 
 
