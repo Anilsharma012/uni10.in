@@ -90,6 +90,17 @@ router.get('/', authOptional, async (req, res) => {
     let query = Product.find(filter);
     if (sort) query = query.sort(sort);
     const docs = await query.skip((p - 1) * l).limit(l).lean();
+
+    // Ensure slug is included in response and log for debugging
+    console.log(`[Products.list] Returning ${docs.length} products`);
+    if (docs.length > 0) {
+      const firstProductSlug = docs[0].slug;
+      console.log(`[Products.list] First product slug: "${firstProductSlug}"`);
+      if (!firstProductSlug) {
+        console.warn(`[Products.list] WARNING: First product has no slug!`);
+      }
+    }
+
     return res.json({ ok: true, data: docs });
   } catch (e) {
     console.error(e);
