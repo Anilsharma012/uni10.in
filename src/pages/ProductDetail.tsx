@@ -104,6 +104,11 @@ type P = {
     images: string[];
     primaryImageIndex?: number;
   }>;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string;
+  };
 };
 
 const ProductDetail = () => {
