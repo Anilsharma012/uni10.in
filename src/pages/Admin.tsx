@@ -412,6 +412,11 @@ type ProductFormState = {
     type: 'flat' | 'percentage';
     value: number;
   };
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
 };
 
 const EMPTY_FORM: ProductFormState = {
@@ -449,6 +454,11 @@ const EMPTY_FORM: ProductFormState = {
   discount: {
     type: 'flat',
     value: 0,
+  },
+  seo: {
+    title: '',
+    description: '',
+    keywords: '',
   },
 };
 
@@ -758,6 +768,11 @@ const Admin = () => {
     } : {
       type: 'flat',
       value: 0,
+    },
+    seo: {
+      title: product.seo?.title ?? '',
+      description: product.seo?.description ?? '',
+      keywords: product.seo?.keywords ?? '',
     },
   });
 
@@ -1654,6 +1669,11 @@ const handleDialogOpenChange = (open: boolean) => {
                 type: productForm.discount.type,
                 value: productForm.discount.value,
               } : undefined,
+              seo: {
+                title: productForm.seo.title.trim() || undefined,
+                description: productForm.seo.description.trim() || undefined,
+                keywords: productForm.seo.keywords.trim() || undefined,
+              },
             };
 
             await apiFetch(`${ENDPOINTS.products}/${(editingProduct as any).id || (editingProduct as any)._id}`, {
@@ -1750,6 +1770,11 @@ const handleProductSubmit = async (e: React.FormEvent) => {
           type: productForm.discount.type,
           value: productForm.discount.value,
         } : undefined,
+        seo: {
+          title: productForm.seo.title.trim() || undefined,
+          description: productForm.seo.description.trim() || undefined,
+          keywords: productForm.seo.keywords.trim() || undefined,
+        },
       };
 
       if (editingProduct) {
@@ -3517,6 +3542,40 @@ const handleProductSubmit = async (e: React.FormEvent) => {
                       )}
                     </div>
                   ))}
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold mb-4">SEO Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="seoTitle">SEO Title</Label>
+                    <Input
+                      id="seoTitle"
+                      value={productForm.seo.title}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, title: e.target.value } }))}
+                      placeholder="Short page title for Google (e.g., Blue Winter Hoodie for Men)"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seoDescription">SEO Description</Label>
+                    <Textarea
+                      id="seoDescription"
+                      value={productForm.seo.description}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, description: e.target.value } }))}
+                      placeholder="Short summary for search results (e.g., Premium blue winter hoodie for men. Warm, comfortable, and stylish.)"
+                      rows={2}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seoKeywords">SEO Keywords</Label>
+                    <Input
+                      id="seoKeywords"
+                      value={productForm.seo.keywords}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, keywords: e.target.value } }))}
+                      placeholder="Comma-separated keywords (e.g., hoodie, men hoodie, winter wear)"
+                    />
+                  </div>
                 </div>
               </div>
 
