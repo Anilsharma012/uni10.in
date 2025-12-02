@@ -83,11 +83,25 @@ router.get('/', authOptional, async (req, res) => {
 router.get('/slug/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
-    const doc = await Product.findOne({ slug, active: true }).lean();
-    if (!doc) return res.status(404).json({ ok: false, message: 'Not found' });
+    // Try exact match first
+    let doc = await Product.findOne({ slug, active: true }).lean();
+
+    // If not found, try case-insensitive match
+    if (!doc) {
+      doc = await Product.findOne({
+        slug: new RegExp(`^${slug}$`, 'i'),
+        active: true
+      }).lean();
+    }
+
+    if (!doc) {
+      console.warn(`[Products] Slug not found: ${slug}`);
+      return res.status(404).json({ ok: false, message: 'Product not found' });
+    }
+
     return res.json({ ok: true, data: doc });
   } catch (e) {
-    console.error(e);
+    console.error('[Products] Error fetching by slug:', e);
     return res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
