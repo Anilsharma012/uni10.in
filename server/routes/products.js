@@ -85,8 +85,6 @@ router.get('/slug/:slug', async (req, res) => {
     let { slug } = req.params;
     slug = String(slug).trim();
 
-    console.log(`[Products] Looking for slug: "${slug}"`);
-
     // Try exact match first
     let doc = await Product.findOne({ slug, active: true }).lean();
 
@@ -101,7 +99,6 @@ router.get('/slug/:slug', async (req, res) => {
 
     // If still not found, try searching in title as fallback
     if (!doc) {
-      console.warn(`[Products] Slug not found, trying title search for: ${slug}`);
       doc = await Product.findOne({
         title: new RegExp(slug, 'i'),
         active: true
@@ -109,14 +106,12 @@ router.get('/slug/:slug', async (req, res) => {
     }
 
     if (!doc) {
-      console.warn(`[Products] Product not found for slug: "${slug}"`);
       return res.status(404).json({ ok: false, message: 'Product not found' });
     }
 
-    console.log(`[Products] Found product: ${doc.title} (${doc.slug})`);
     return res.json({ ok: true, data: doc });
   } catch (e) {
-    console.error('[Products] Error fetching by slug:', e.message);
+    console.error(e);
     return res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
