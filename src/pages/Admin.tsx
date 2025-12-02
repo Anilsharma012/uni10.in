@@ -3530,6 +3530,40 @@ const handleProductSubmit = async (e: React.FormEvent) => {
                 </div>
               </div>
 
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold mb-4">SEO Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="seoTitle">SEO Title</Label>
+                    <Input
+                      id="seoTitle"
+                      value={productForm.seo.title}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, title: e.target.value } }))}
+                      placeholder="Short page title for Google (e.g., Blue Winter Hoodie for Men)"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seoDescription">SEO Description</Label>
+                    <Textarea
+                      id="seoDescription"
+                      value={productForm.seo.description}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, description: e.target.value } }))}
+                      placeholder="Short summary for search results (e.g., Premium blue winter hoodie for men. Warm, comfortable, and stylish.)"
+                      rows={2}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="seoKeywords">SEO Keywords</Label>
+                    <Input
+                      id="seoKeywords"
+                      value={productForm.seo.keywords}
+                      onChange={(e) => setProductForm((p) => ({ ...p, seo: { ...p.seo, keywords: e.target.value } }))}
+                      placeholder="Comma-separated keywords (e.g., hoodie, men hoodie, winter wear)"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <Button type="submit" className="w-full" disabled={saving}>
                 {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {editingProduct ? 'Update Product' : 'Add Product'}
