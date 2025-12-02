@@ -190,6 +190,13 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
         : [],
       sizeChart: body.sizeChart || undefined,
       colorImages: body.colorImages && typeof body.colorImages === 'object' ? body.colorImages : {},
+      seo: body.seo !== undefined && typeof body.seo === 'object'
+        ? {
+            title: body.seo.title ? String(body.seo.title).trim() : undefined,
+            description: body.seo.description ? String(body.seo.description).trim() : undefined,
+            keywords: body.seo.keywords ? String(body.seo.keywords).trim() : undefined,
+          }
+        : { title: undefined, description: undefined, keywords: undefined },
       active: typeof body.active === 'boolean' ? body.active : true,
     };
 
