@@ -82,9 +82,33 @@ router.get('/', authOptional, async (req, res) => {
 // Get by slug (new endpoint, preferred)
 router.get('/slug/:slug', async (req, res) => {
   try {
-    const { slug } = req.params;
-    const doc = await Product.findOne({ slug, active: true }).lean();
-    if (!doc) return res.status(404).json({ ok: false, message: 'Not found' });
+    let { slug } = req.params;
+    slug = String(slug).trim();
+
+    // Try exact match first
+    let doc = await Product.findOne({ slug, active: true }).lean();
+
+    // If not found, try case-insensitive match
+    if (!doc) {
+      const escapedSlug = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      doc = await Product.findOne({
+        slug: new RegExp(`^${escapedSlug}$`, 'i'),
+        active: true
+      }).lean();
+    }
+
+    // If still not found, try searching in title as fallback
+    if (!doc) {
+      doc = await Product.findOne({
+        title: new RegExp(slug, 'i'),
+        active: true
+      }).lean();
+    }
+
+    if (!doc) {
+      return res.status(404).json({ ok: false, message: 'Product not found' });
+    }
+
     return res.json({ ok: true, data: doc });
   } catch (e) {
     console.error(e);

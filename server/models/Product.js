@@ -4,7 +4,7 @@ const slugify = require('slugify');
 const ProductSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    slug: { type: String, unique: true, index: true },
+    slug: { type: String, unique: true },
     price: { type: Number, required: true },
     images: { type: [String], default: [] },
     image_url: { type: String },
