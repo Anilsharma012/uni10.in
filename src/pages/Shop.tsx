@@ -137,12 +137,18 @@ const Shop = ({ sortBy = "all", collectionSlug }: ShopPageProps = {}) => {
 
       const query = params.toString();
       const url = query ? `/api/products?${query}` : "/api/products";
+      console.log(`[Shop] Fetching products from: ${url}`);
       const { ok, json } = await api(url);
       if (!ok) throw new Error(json?.message || json?.error || "Failed to load");
 
       let list = Array.isArray(json?.data)
         ? (json.data as ProductRow[])
         : [];
+
+      console.log(`[Shop] Loaded ${list.length} products`);
+      if (list.length > 0) {
+        console.log(`[Shop] First product:`, { title: list[0].title, slug: list[0].slug, id: list[0]._id });
+      }
 
       if (sortBy === "newest") {
         list = list.sort((a, b) => {
@@ -155,6 +161,7 @@ const Shop = ({ sortBy = "all", collectionSlug }: ShopPageProps = {}) => {
       setProducts(list);
       setCurrentPage(1);
     } catch (e: any) {
+      console.error(`[Shop] Error loading products:`, e);
       toast.error(e?.message || "Failed to load products");
       setProducts([]);
     } finally {
