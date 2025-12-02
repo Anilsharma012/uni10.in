@@ -1760,6 +1760,11 @@ const handleProductSubmit = async (e: React.FormEvent) => {
           type: productForm.discount.type,
           value: productForm.discount.value,
         } : undefined,
+        seo: {
+          title: productForm.seo.title.trim() || undefined,
+          description: productForm.seo.description.trim() || undefined,
+          keywords: productForm.seo.keywords.trim() || undefined,
+        },
       };
 
       if (editingProduct) {
