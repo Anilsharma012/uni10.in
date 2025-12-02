@@ -144,10 +144,14 @@ const ProductDetail = () => {
           ? `/api/products/${slug}`
           : `/api/products/slug/${slug}`;
 
+        console.log(`[ProductDetail] Fetching product with slug: "${slug}", using URL: ${url}`);
         const { ok, json } = await api(url);
+        console.log(`[ProductDetail] API Response:`, { ok, data: json });
+
         if (!ok) throw new Error(json?.message || json?.error || "Failed to load product");
         if (!ignore) {
           const productData = json?.data as P;
+          console.log(`[ProductDetail] Product loaded: ${productData?.title}`);
           setProduct(productData);
           setSelectedSize(""); // reset size on product change
           // Set to first color from colorVariants if available, otherwise use colors array
@@ -156,6 +160,7 @@ const ProductDetail = () => {
           setQuantity(1);
         }
       } catch (e: any) {
+        console.error(`[ProductDetail] Error loading product:`, e);
         if (!ignore) {
           toast({
             title: e?.message || "Failed to load product",
