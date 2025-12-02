@@ -156,7 +156,6 @@ const ProductDetail = () => {
           setQuantity(1);
         }
       } catch (e: any) {
-        console.error(`[ProductDetail] Error loading product:`, e);
         if (!ignore) {
           toast({
             title: e?.message || "Failed to load product",
