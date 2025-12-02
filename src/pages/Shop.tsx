@@ -155,7 +155,6 @@ const Shop = ({ sortBy = "all", collectionSlug }: ShopPageProps = {}) => {
       setProducts(list);
       setCurrentPage(1);
     } catch (e: any) {
-      console.error(`[Shop] Error loading products:`, e);
       toast.error(e?.message || "Failed to load products");
       setProducts([]);
     } finally {
