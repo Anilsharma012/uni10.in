@@ -66,6 +66,7 @@ export const ProductCard = ({ id, name, price, image, category, to, slug, images
   };
 
   const linkTo = to || (slug && String(slug).trim() ? `/products/${slug}` : `/products/${id}`);
+  console.log(`[ProductCard] ${name}: slug="${slug}", link="${linkTo}"`);
 
   return (
     <Card className="group overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300">
