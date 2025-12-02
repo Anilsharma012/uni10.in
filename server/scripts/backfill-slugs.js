@@ -21,12 +21,31 @@ async function backfillSlugs() {
     });
     console.log('[Backfill Slugs] Connected to MongoDB');
 
-    // Find all products without a slug
-    const productsWithoutSlug = await Product.find({ $or: [{ slug: null }, { slug: '' }] });
+    // Find all products without a proper slug (null, empty, or undefined)
+    const productsWithoutSlug = await Product.find({
+      $or: [
+        { slug: null },
+        { slug: '' },
+        { slug: { $exists: false } }
+      ]
+    });
     console.log(`[Backfill Slugs] Found ${productsWithoutSlug.length} products without slug`);
 
+    // Also check for total products
+    const totalProducts = await Product.countDocuments({});
+    console.log(`[Backfill Slugs] Total products in database: ${totalProducts}`);
+
     if (productsWithoutSlug.length === 0) {
-      console.log('[Backfill Slugs] All products already have slugs. Exiting.');
+      console.log('[Backfill Slugs] All products already have slugs. Verifying...');
+      // Verify that all products have non-empty slugs
+      const productsWithEmptySlug = await Product.find({
+        $or: [{ slug: '' }, { slug: null }]
+      });
+      if (productsWithEmptySlug.length === 0) {
+        console.log('[Backfill Slugs] Verification passed. All products have valid slugs.');
+      } else {
+        console.log(`[Backfill Slugs] Found ${productsWithEmptySlug.length} products with empty slugs!`);
+      }
       await mongoose.disconnect();
       return;
     }
