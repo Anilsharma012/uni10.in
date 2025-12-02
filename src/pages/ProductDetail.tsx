@@ -180,8 +180,12 @@ const ProductDetail = () => {
     const productTitle = product.title || product.name || "Product";
     const productPrice = Number(product.price || 0);
     const priceStr = productPrice.toLocaleString("en-IN");
-    const pageTitle = `${productTitle} - ₹${priceStr} | uni10`;
-    const description = product.description || `Shop ${productTitle} at uni10. Premium streetwear and lifestyle products.`;
+
+    // Use SEO title if available, otherwise use default format
+    const pageTitle = product.seo?.title || `${productTitle} - ₹${priceStr} | uni10`;
+
+    // Use SEO description if available, otherwise use product description
+    const description = product.seo?.description || product.description || `Shop ${productTitle} at uni10. Premium streetwear and lifestyle products.`;
     const imageUrl = resolveImage(product.image_url || (product.images?.[0] || ""));
 
     // Update page title
@@ -195,6 +199,17 @@ const ProductDetail = () => {
       document.head.appendChild(descriptionMeta);
     }
     descriptionMeta.setAttribute("content", description);
+
+    // Update or create meta keywords if SEO keywords are provided
+    if (product.seo?.keywords) {
+      let keywordsMeta = document.querySelector('meta[name="keywords"]');
+      if (!keywordsMeta) {
+        keywordsMeta = document.createElement("meta");
+        keywordsMeta.setAttribute("name", "keywords");
+        document.head.appendChild(keywordsMeta);
+      }
+      keywordsMeta.setAttribute("content", product.seo.keywords);
+    }
 
     // Update or create OG title
     let ogTitle = document.querySelector('meta[property="og:title"]');
