@@ -1664,6 +1664,11 @@ const handleDialogOpenChange = (open: boolean) => {
                 type: productForm.discount.type,
                 value: productForm.discount.value,
               } : undefined,
+              seo: {
+                title: productForm.seo.title.trim() || undefined,
+                description: productForm.seo.description.trim() || undefined,
+                keywords: productForm.seo.keywords.trim() || undefined,
+              },
             };
 
             await apiFetch(`${ENDPOINTS.products}/${(editingProduct as any).id || (editingProduct as any)._id}`, {
