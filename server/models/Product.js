@@ -97,6 +97,15 @@ const ProductSchema = new mongoose.Schema(
       default: () => ({ type: 'flat', value: 0 }),
     },
 
+    seo: {
+      type: {
+        title: { type: String },
+        description: { type: String },
+        keywords: { type: String },
+      },
+      default: {},
+    },
+
     active: { type: Boolean, default: true },
     featured: { type: Boolean, default: false },
   },
