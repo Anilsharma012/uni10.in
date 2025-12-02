@@ -83,7 +83,7 @@ router.get('/', authOptional, async (req, res) => {
 router.get('/slug/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
-    const doc = await Product.findOne({ slug }).lean();
+    const doc = await Product.findOne({ slug, active: true }).lean();
     if (!doc) return res.status(404).json({ ok: false, message: 'Not found' });
     return res.json({ ok: true, data: doc });
   } catch (e) {
