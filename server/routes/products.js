@@ -342,6 +342,13 @@ router.patch('/:id', requireAuth, requireAdmin, async (req, res) => {
         value: Number(body.discount.value || 0)
       };
     }
+    if (body.seo !== undefined && typeof body.seo === 'object') {
+      updates.seo = {
+        title: body.seo.title ? String(body.seo.title).trim() : undefined,
+        description: body.seo.description ? String(body.seo.description).trim() : undefined,
+        keywords: body.seo.keywords ? String(body.seo.keywords).trim() : undefined,
+      };
+    }
     if (typeof body.sizeChartUrl !== 'undefined') updates.sizeChartUrl = body.sizeChartUrl || undefined;
     if (typeof body.sizeChartTitle !== 'undefined') updates.sizeChartTitle = body.sizeChartTitle || undefined;
     if (body.sizeChart !== undefined) updates.sizeChart = body.sizeChart || undefined;
