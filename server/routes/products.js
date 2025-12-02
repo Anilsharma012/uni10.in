@@ -5,24 +5,6 @@ const Category = require('../models/Category');
 const slugify = require('slugify');
 const { authOptional, requireAuth, requireAdmin } = require('../middleware/auth');
 
-// DEBUG: Test endpoint to check product data
-router.get('/debug/test', async (req, res) => {
-  try {
-    const products = await Product.find({ active: true }).limit(3).lean();
-    const productSummary = products.map(p => ({
-      id: p._id,
-      title: p.title,
-      slug: p.slug,
-      hasSlug: !!p.slug,
-      active: p.active
-    }));
-    return res.json({ ok: true, count: products.length, products: productSummary });
-  } catch (e) {
-    console.error('[DEBUG] Error:', e);
-    return res.status(500).json({ ok: false, message: e.message });
-  }
-});
-
 // List products: supports active, featured, category, aliases (collection, categorySlug), q, sort, page, limit
 router.get('/', authOptional, async (req, res) => {
   try {
