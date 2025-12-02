@@ -82,26 +82,41 @@ router.get('/', authOptional, async (req, res) => {
 // Get by slug (new endpoint, preferred)
 router.get('/slug/:slug', async (req, res) => {
   try {
-    const { slug } = req.params;
+    let { slug } = req.params;
+    slug = String(slug).trim();
+
+    console.log(`[Products] Looking for slug: "${slug}"`);
+
     // Try exact match first
     let doc = await Product.findOne({ slug, active: true }).lean();
 
     // If not found, try case-insensitive match
     if (!doc) {
+      const escapedSlug = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       doc = await Product.findOne({
-        slug: new RegExp(`^${slug}$`, 'i'),
+        slug: new RegExp(`^${escapedSlug}$`, 'i'),
+        active: true
+      }).lean();
+    }
+
+    // If still not found, try searching in title as fallback
+    if (!doc) {
+      console.warn(`[Products] Slug not found, trying title search for: ${slug}`);
+      doc = await Product.findOne({
+        title: new RegExp(slug, 'i'),
         active: true
       }).lean();
     }
 
     if (!doc) {
-      console.warn(`[Products] Slug not found: ${slug}`);
+      console.warn(`[Products] Product not found for slug: "${slug}"`);
       return res.status(404).json({ ok: false, message: 'Product not found' });
     }
 
+    console.log(`[Products] Found product: ${doc.title} (${doc.slug})`);
     return res.json({ ok: true, data: doc });
   } catch (e) {
-    console.error('[Products] Error fetching by slug:', e);
+    console.error('[Products] Error fetching by slug:', e.message);
     return res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
