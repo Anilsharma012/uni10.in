@@ -769,6 +769,11 @@ const Admin = () => {
       type: 'flat',
       value: 0,
     },
+    seo: {
+      title: product.seo?.title ?? '',
+      description: product.seo?.description ?? '',
+      keywords: product.seo?.keywords ?? '',
+    },
   });
 
     setIsDialogOpen(true);
