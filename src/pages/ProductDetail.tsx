@@ -132,13 +132,19 @@ const ProductDetail = () => {
   const [isVerifiedBuyer, setIsVerifiedBuyer] = useState(false);
   const [reviewKey, setReviewKey] = useState(0);
 
-  // ✅ Product fast fetch – Fetch by slug
+  // ✅ Product fast fetch – Fetch by slug or ID
   useEffect(() => {
     let ignore = false;
     (async () => {
       try {
         setLoading(true);
-        const { ok, json } = await api(`/api/products/slug/${slug}`);
+        // Try to fetch by slug first, then fall back to ID
+        const isMongoId = /^[0-9a-fA-F]{24}$/.test(String(slug || ""));
+        const url = isMongoId
+          ? `/api/products/${slug}`
+          : `/api/products/slug/${slug}`;
+
+        const { ok, json } = await api(url);
         if (!ok) throw new Error(json?.message || json?.error || "Failed to load product");
         if (!ignore) {
           const productData = json?.data as P;
