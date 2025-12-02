@@ -412,6 +412,11 @@ type ProductFormState = {
     type: 'flat' | 'percentage';
     value: number;
   };
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
 };
 
 const EMPTY_FORM: ProductFormState = {
